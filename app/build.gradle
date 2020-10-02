@@ -35,4 +35,5 @@ dependencies {
     // https://stackoverflow.com/questions/53448450/how-to-resolve-error-failed-to-resolve-org-jetbrains-kotlinkotlin-stdlib-jre7
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "com.android.support:recyclerview-v7:$support_lib_version"
 }

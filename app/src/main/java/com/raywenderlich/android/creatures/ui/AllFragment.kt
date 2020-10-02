@@ -53,8 +53,6 @@ class AllFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    view.setOnClickListener { _ ->
-      startActivity(CreatureActivity.newIntent(view.context, 1))
-    }
+
   }
 }
