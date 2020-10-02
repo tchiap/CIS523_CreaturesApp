@@ -1,6 +1,7 @@
 package com.raywenderlich.android.creatures.ui
 
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.LinearSnapHelper
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,13 @@ import kotlinx.android.synthetic.main.list_item_creature_with_food.view.*
 
 class CreatureWithFoodAdapter(private val creatures: MutableList<Creature>) : RecyclerView.Adapter<CreatureWithFoodAdapter.ViewHolder>() {
 
+    private val viewPool = RecyclerView.RecycledViewPool()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(parent.inflate(R.layout.list_item_creature_with_food))
+        val holder =  ViewHolder(parent.inflate(R.layout.list_item_creature_with_food))
+        holder.itemView.foodRecyclerView.recycledViewPool = viewPool
+        LinearSnapHelper().attachToRecyclerView(holder.itemView.foodRecyclerView)
+        return holder
     }
 
     override fun getItemCount() = creatures.size

@@ -9,7 +9,7 @@
         android:id="@+id/creatureImage"
         android:layout_width="@dimen/list_item_creature_height"
         android:layout_height="@dimen/list_item_creature_height"
-        android:layout_marginStart="@dimen/padding_standard"
+        android:background="@color/colorAccent"
         android:contentDescription="@string/content_description_creature_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
