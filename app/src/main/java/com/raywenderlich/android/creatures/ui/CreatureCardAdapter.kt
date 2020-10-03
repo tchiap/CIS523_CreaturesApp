@@ -10,23 +10,49 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import com.raywenderlich.android.creatures.R
+import com.raywenderlich.android.creatures.app.Constants
 import com.raywenderlich.android.creatures.app.inflate
 import com.raywenderlich.android.creatures.model.Creature
-import kotlinx.android.synthetic.main.list_item_creature_card.view.*
+//import kotlinx.android.synthetic.main.list_item_creature_card.view.*
+import kotlinx.android.synthetic.main.list_item_creature_card.view.creatureCard
+import kotlinx.android.synthetic.main.list_item_creature_card.view.creatureImage
+import kotlinx.android.synthetic.main.list_item_creature_card.view.fullName
+import kotlinx.android.synthetic.main.list_item_creature_card.view.nameHolder
+import kotlinx.android.synthetic.main.list_item_creature_card_jupiter.view.*
+import java.lang.IllegalArgumentException
 
 class CreatureCardAdapter(private val creatures: MutableList<Creature>) : RecyclerView.Adapter<CreatureCardAdapter.ViewHolder>() {
 
     var scrollDirection = ScrollDirection.DOWN
+    var jupiterSpanSize = 2
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(parent.inflate(R.layout.list_item_creature_card))
+        return when (viewType) {
+            ViewType.OTHER.ordinal -> ViewHolder(parent.inflate(R.layout.list_item_creature_card))
+            ViewType.JUPITER.ordinal -> ViewHolder(parent.inflate(R.layout.list_item_creature_card_jupiter))
+            else -> throw IllegalArgumentException()
+        }
+        //return ViewHolder(parent.inflate(R.layout.list_item_creature_card))
     }
 
     override fun onBindViewHolder(holder: CreatureCardAdapter.ViewHolder, position: Int) {
         holder.bind(creatures[position])
     }
 
+    override fun getItemViewType(position: Int): Int {
+        val creature = creatures[position]
+        return if (creature.planet == Constants.JUPITER)  ViewType.JUPITER.ordinal else ViewType.OTHER.ordinal
+    }
+
     override fun getItemCount() = creatures.size
+
+    fun spanSizeAtPosition(position: Int) : Int {
+        return if (creatures[position].planet == Constants.JUPITER) {
+            jupiterSpanSize
+        } else {
+            1
+        }
+    }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
@@ -56,10 +82,14 @@ class CreatureCardAdapter(private val creatures: MutableList<Creature>) : Recycl
             val image = BitmapFactory.decodeResource(context.resources, imageResource)
             Palette.from(image).generate { palette ->
                 val backgroundColor = palette.getDominantColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
-                itemView.creatureCardContainer.setBackgroundColor(backgroundColor)
+                itemView.creatureCard.setBackgroundColor(backgroundColor)
                 itemView.nameHolder.setBackgroundColor(backgroundColor)
                 val textColor = if (isColorDark(backgroundColor)) Color.WHITE else Color.BLACK
                 itemView.fullName.setTextColor(textColor)
+
+                if (itemView.slogan != null) {
+                    itemView.slogan.setTextColor(textColor)
+                }
             }
         }
 
@@ -85,5 +115,9 @@ class CreatureCardAdapter(private val creatures: MutableList<Creature>) : Recycl
     }
     enum class ScrollDirection {
         UP, DOWN
+    }
+
+    enum class ViewType {
+        JUPITER, OTHER
     }
 }
