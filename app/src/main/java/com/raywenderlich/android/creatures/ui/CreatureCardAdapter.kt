@@ -8,12 +8,15 @@ import android.support.v7.graphics.Palette
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import com.raywenderlich.android.creatures.R
 import com.raywenderlich.android.creatures.app.inflate
 import com.raywenderlich.android.creatures.model.Creature
 import kotlinx.android.synthetic.main.list_item_creature_card.view.*
 
 class CreatureCardAdapter(private val creatures: MutableList<Creature>) : RecyclerView.Adapter<CreatureCardAdapter.ViewHolder>() {
+
+    var scrollDirection = ScrollDirection.DOWN
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(parent.inflate(R.layout.list_item_creature_card))
@@ -25,7 +28,7 @@ class CreatureCardAdapter(private val creatures: MutableList<Creature>) : Recycl
 
     override fun getItemCount() = creatures.size
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         private lateinit var creature: Creature
 
@@ -40,6 +43,7 @@ class CreatureCardAdapter(private val creatures: MutableList<Creature>) : Recycl
             itemView.creatureImage.setImageResource(imageResource)
             itemView.fullName.text = creature.fullName
             setBackgroundColors(context, imageResource)
+            animateView(itemView)
         }
 
         override fun onClick(view: View) {
@@ -63,5 +67,22 @@ class CreatureCardAdapter(private val creatures: MutableList<Creature>) : Recycl
             val darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255
             return darkness >= 0.5
         }
+
+        private fun animateView(viewToAnimate:  View) {
+            if (viewToAnimate.animation == null) {
+
+                val animId = if(scrollDirection == ScrollDirection.DOWN) R.anim.slide_from_bottom else R.anim.slide_from_top
+
+                //val animation = AnimationUtils.loadAnimation(viewToAnimate.context, R.anim.slide_from_bottom)
+                val animation = AnimationUtils.loadAnimation(viewToAnimate.context, animId)
+                viewToAnimate.animation = animation
+            }
+
+        }
+
+
+    }
+    enum class ScrollDirection {
+        UP, DOWN
     }
 }
