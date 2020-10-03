@@ -30,6 +30,7 @@ class CreatureCardAdapter(private val creatures: MutableList<Creature>) : Recycl
         return when (viewType) {
             ViewType.OTHER.ordinal -> ViewHolder(parent.inflate(R.layout.list_item_creature_card))
             ViewType.JUPITER.ordinal -> ViewHolder(parent.inflate(R.layout.list_item_creature_card_jupiter))
+            ViewType.MARS.ordinal -> ViewHolder(parent.inflate(R.layout.list_item_creature_card_mars))
             else -> throw IllegalArgumentException()
         }
         //return ViewHolder(parent.inflate(R.layout.list_item_creature_card))
@@ -39,10 +40,12 @@ class CreatureCardAdapter(private val creatures: MutableList<Creature>) : Recycl
         holder.bind(creatures[position])
     }
 
-    override fun getItemViewType(position: Int): Int {
-        val creature = creatures[position]
-        return if (creature.planet == Constants.JUPITER)  ViewType.JUPITER.ordinal else ViewType.OTHER.ordinal
-    }
+    override fun getItemViewType(position: Int) =
+        when (creatures[position].planet) {
+            Constants.JUPITER -> ViewType.JUPITER.ordinal
+            Constants.MARS -> ViewType.MARS.ordinal
+            else -> ViewType.OTHER.ordinal
+        }
 
     override fun getItemCount() = creatures.size
 
@@ -118,6 +121,6 @@ class CreatureCardAdapter(private val creatures: MutableList<Creature>) : Recycl
     }
 
     enum class ViewType {
-        JUPITER, OTHER
+        JUPITER, MARS, OTHER
     }
 }
