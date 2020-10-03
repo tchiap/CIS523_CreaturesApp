@@ -29,11 +29,11 @@
  */
 
 package com.raywenderlich.android.creatures.ui
-
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,9 +45,6 @@ import kotlinx.android.synthetic.main.fragment_all.*
 class AllFragment : Fragment() {
 
   private val adapter = CreatureCardAdapter(CreatureStore.getCreatures().toMutableList())
-  //private val adapter = CreatureAdapter(CreatureStore.getCreatures().toMutableList())
-  //private val adapter = CreatureWithFoodAdapter(CreatureStore.getCreatures().toMutableList())
-
 
   companion object {
     fun newInstance(): AllFragment {
@@ -62,20 +59,8 @@ class AllFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-
-
-    val layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
-    layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-      override fun getSpanSize(position: Int): Int {
-        return if ((position + 1) % 7 == 0) 3 else 1
-      }
-    }
-
-    //creatureRecyclerView.layoutManager = LinearLayoutManager(activity)
-    //creatureRecyclerView.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
-
+    val layoutManager = StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
     creatureRecyclerView.layoutManager = layoutManager
     creatureRecyclerView.adapter = adapter
-
   }
 }
