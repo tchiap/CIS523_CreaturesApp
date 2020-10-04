@@ -7,6 +7,7 @@ import android.view.animation.AnimationUtils
 import com.raywenderlich.android.creatures.R
 import com.raywenderlich.android.creatures.app.inflate
 import com.raywenderlich.android.creatures.model.Creature
+import com.raywenderlich.android.creatures.model.Favorites
 import kotlinx.android.synthetic.main.list_item_creature.view.*
 import java.util.*
 
@@ -36,6 +37,9 @@ class CreatureAdapter(private val creatures: MutableList<Creature>) :
                 Collections.swap(creatures, i, i-1)
             }
         }
+
+        // persist favorites
+        Favorites.saveFavorites(creatures.map { it.id }, recyclerView.context)
         notifyItemMoved(fromPosition, toPosition)
         return true
     }
