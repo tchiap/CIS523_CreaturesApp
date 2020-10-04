@@ -34,6 +34,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
@@ -43,9 +44,11 @@ import com.raywenderlich.android.creatures.model.CreatureStore
 import kotlinx.android.synthetic.main.fragment_favorites.*
 
 
-class FavoritesFragment : Fragment() {
+class FavoritesFragment : Fragment(), ItemDragListener {
 
-  private val adapter = CreatureAdapter(mutableListOf())
+  private val adapter = CreatureAdapter(mutableListOf(), this)
+
+  private lateinit var itemTouchHelper: ItemTouchHelper
 
   companion object {
     fun newInstance(): FavoritesFragment {
@@ -79,8 +82,11 @@ class FavoritesFragment : Fragment() {
   }
 
   private fun setupItemTouchHelper() {
-    val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
+    itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
     itemTouchHelper.attachToRecyclerView(favoritesRecyclerView)
   }
 
+  override fun onItemDrag(viewHolder: RecyclerView.ViewHolder) {
+    itemTouchHelper.startDrag(viewHolder)
+  }
 }

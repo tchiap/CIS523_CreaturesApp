@@ -20,8 +20,10 @@ import kotlinx.android.synthetic.main.list_item_creature_card.view.fullName
 import kotlinx.android.synthetic.main.list_item_creature_card.view.nameHolder
 import kotlinx.android.synthetic.main.list_item_creature_card_jupiter.view.*
 import java.lang.IllegalArgumentException
+import java.util.*
 
-class CreatureCardAdapter(private val creatures: MutableList<Creature>) : RecyclerView.Adapter<CreatureCardAdapter.ViewHolder>() {
+class CreatureCardAdapter(private val creatures: MutableList<Creature>)
+    : RecyclerView.Adapter<CreatureCardAdapter.ViewHolder>(), ItemTouchHelperListener {
 
     var scrollDirection = ScrollDirection.DOWN
     var jupiterSpanSize = 2
@@ -122,5 +124,19 @@ class CreatureCardAdapter(private val creatures: MutableList<Creature>) : Recycl
 
     enum class ViewType {
         JUPITER, MARS, OTHER
+    }
+
+    override fun onItemMove(recyclerView: RecyclerView, fromPosition: Int, toPosition: Int): Boolean {
+        if (fromPosition < toPosition) {
+            for (i in fromPosition until toPosition) {
+                Collections.swap(creatures, i, i + 1)
+            }
+        } else {
+            for (i in fromPosition downTo toPosition + 1 ) {
+                Collections.swap(creatures, i, i - 1)
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition)
+        return true
     }
 }
