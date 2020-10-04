@@ -107,16 +107,16 @@ class AllFragment : Fragment() {
     when (id) {
       R.id.action_span_1 ->
       {
-        //gridState = GridState.LIST
-        //updateRecyclerView(1, listItemDecoration, gridItemDecoration)
-        showListView()
+        gridState = GridState.LIST
+        updateRecyclerView(1, listItemDecoration, gridItemDecoration)
+        //showListView()
         return true
       }
       R.id.action_span_2 ->
       {
-        //gridState = GridState.GRID
-        //updateRecyclerView(2, listItemDecoration, gridItemDecoration)
-        showGridView()
+        gridState = GridState.GRID
+        updateRecyclerView(2, listItemDecoration, gridItemDecoration)
+        //showGridView()
         return true
       }
     }

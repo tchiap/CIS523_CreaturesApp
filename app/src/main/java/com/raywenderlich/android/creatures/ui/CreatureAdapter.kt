@@ -46,9 +46,17 @@ class CreatureAdapter(private val creatures: MutableList<Creature>, private val 
         return true
     }
 
+    override fun onItemDismiss(viewHolder: RecyclerView.ViewHolder, position: Int) {
+        Favorites.removeFavorite(creatures[position], viewHolder.itemView.context)
+        creatures.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(creatures[position])
+
     }
+
 
 
     inner class ViewHolder(v:View) : RecyclerView.ViewHolder(v), View.OnClickListener, ItemSelectedListener {
